@@ -109,7 +109,7 @@ public class MyLinkedList implements MyList{
                 head.prev = null;
             }
         }
-        else if (index == size - 1){
+        else if (index == size){
             tail = tail.prev;
             if (tail != null){
                 tail.next = null;
