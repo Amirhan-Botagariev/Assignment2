@@ -321,7 +321,7 @@ public void remove(int index) {
                 head.prev = null;
             }
         }
-        else if (index == size - 1){
+        else if (index == size){
             tail = tail.prev;
             if (tail != null){
                 tail.next = null;
@@ -338,13 +338,178 @@ public void remove(int index) {
     }
 ```
 ### 1. Firstly, we check for valid index
-### 2. Then
+### 2. If the index is zero, the head of the list is set to the next node, and the previous pointer of the new head is set to null. This effectively removes the first item in the list.
+### 3. If the index is equal to the size of the list, the tail of the list is set to the previous node, and the next pointer of the new tail is set to null. This effectively removes the last item in the list.
+### 4. If the index is neither zero nor equal to the size of the list, the method uses a loop to traverse the list until it reaches the node at the specified index.
+### 5. Once the node at the specified index is found, its previous node's next pointer is set to its next node, and its next node's previous pointer is set to its previous node and the size of the list is decremented
 
+# $\S7.$ Method clear()
+## ArrayList
+```java
+public void clear() {
+        ArrayList = new Object[5];
+    }
+```
+### 1. We say that ArrayList will be a new array
 
+## Linked List
+```java
+public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+```
+### 1. We say that head, tail will be null, and size = 0, which in turn will cause all the nodes to be eligible for garbage collection
 
+# $\S8.$ Method get(int index)
+## ArrayList
+```java
+public Object get(int index) {
+        return ArrayList[index];
+    }
+```
+### 1. It will return an element from array
 
+## Linked List
+```java
+public Object get(int index) {
+        if (index<0 || index > size){
+            throw new IndexOutOfBoundsException("Invalid Index");
+        }
 
+        Node currentNode = head;
+        int currentIndex = 0;
 
+        while (currentIndex<index){
+            currentNode = currentNode.next;
+            currentIndex++;
+        }
+
+        return currentNode.data;
+    }
+```
+### 1. It checks for valid index
+### 2. It creates new node "currentNode" and currentIndex = 0
+### 3. It uses a while loop to find a right node
+### 4. Then it return a field data which containg element
+
+# $\S9.$ Method indexOf(Object o)
+## ArrayList
+```java
+public int indexOf(Object o) {
+        int index = -1;
+        for(int i = 0; i<sizeOfArrayList; i++){
+            if (ArrayList[i].equals(o)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+```
+### 1. It uses for loop to find ArrayList[i] which equals to element and return its index
+### 2. If it can't find it return index which equals -1
+## Linked List
+```java
+public int indexOf(Object o) {
+        Node currentNode = head;
+        int index = 0;
+        while (currentNode != null) {
+            if (currentNode.data.equals(o)) {
+                return index;
+            }
+            index++;
+            currentNode = currentNode.next;
+        }
+        return -1;
+    }
+```
+### 1. It created node "currentNode" which equals to head and index = 0
+### 2. It uses while loop to find right index and going to the next node. If it found it return index. Otherwise it return -1
+# $\S10.$ Method lastIndexOf(Object o)
+## ArrayList
+```java
+public int lastIndexOf(Object o) {
+        int index = -1;
+        for(int i = sizeOfArrayList - 1; i >= 0; i--){
+            if (ArrayList[i].equals(o)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+```
+### 1. It's like previous method but it starts from the end of an array
+
+## Linked List
+```java
+public int lastIndexOf(Object o) {
+        Node currentNode = tail;
+        int index = size - 1;
+        while (currentNode != null) {
+            if (currentNode.data.equals(o)) {
+                return index;
+            }
+            index--;
+            currentNode = currentNode.prev;
+        }
+        return -1;
+    }
+```
+### 1. It's like previous method but it starts from the tail of Linked List
+# $\S11.$ Method sort()
+## ArrayList
+```java
+public void sort() {
+        for(int i = 1; i<sizeOfArrayList;i++){
+            Object key = ArrayList[i];
+            int j = i -1;
+            while (j >= 0 && ((Comparable) ArrayList[j]).compareTo(key) > 0){
+                ArrayList[j+1] = ArrayList[j];
+                j = j -1;
+            }
+            ArrayList[j+1] = key;
+        }
+    }
+```
+### 1. A loop is initiated that iterates through the arraylist from index 1 to sizeOfArrayList-1. For each iteration of the loop, the current element at the i-th index is stored in a variable called "key".
+### 2. A variable j is initialized to i-1. This variable will be used to traverse the sub-array to the left of the key element. 
+### 3. A while loop is initiated that runs as long as j is greater than or equal to 0 and the element at the j-th index is greater than the key element. Inside the while loop, the element at the j-th index is shifted one position to the right (i.e., ArrayList[j+1] = ArrayList[j]). The value of j is then decremented by 1.
+### 4. After the while loop ends, the key element is inserted into its correct position in the sub-array. The value of j has already been decremented by 1, so the key element is inserted at index j+1.
+### 5. Steps 2-6 are repeated until the loop has iterated through the entire arraylist.
+
+## LinkedList
+```java
+public void sort() {
+        if (size <= 1) {
+            return;
+        }
+        Node current = head.next;
+        while (current != null) {
+            Object data = current.data;
+            Node previous = current.prev;
+            while (previous != null && ((Comparable)previous.data).compareTo(data) > 0) {
+                previous.next.data = previous.data;
+                previous = previous.prev;
+            }
+            if (previous == null) {
+                head.data = data;
+            } else {
+                previous.next.data = data;
+            }
+            current = current.next;
+        }
+    }
+```
+### 1. The method first checks if the size of the list is less than or equal to 1. If so, the list is already sorted, and the method simply returns without doing anything.
+### 2. If the size of the list is greater than 1, the method initializes a "current" variable to point to the second node in the list, since the first node is already considered sorted.
+### 3. The method then iterates over the remaining nodes of the list. For each node, the data of the node is extracted and compared with the data of the nodes that come before it in the sorted part of the list. The "previous" variable is initialized to point to the node immediately before the current node.
+### 4. The method then enters a loop that moves backward through the sorted part of the list, comparing the data of each node with the data of the current node. If the data of a node in the sorted part of the list is greater than the data of the current node, the data of that node is moved to the next node, creating a space for the current node to be inserted.
+### 5. This process continues until a node is reached whose data is less than or equal to the data of the current node, or until the beginning of the sorted part of the list is reached. At this point, the current node is inserted into the list immediately after the previous node.
+### 6. If the previous variable is null, then the current node is the smallest node in the list, and it becomes the new head of the list. Otherwise, the current node is inserted into the correct position in the list by updating the data of the node that comes after previous.
+### 7. The loop then continues with the next node in the list until all nodes have been processed.
 
 
     
