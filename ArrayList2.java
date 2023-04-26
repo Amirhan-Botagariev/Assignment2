@@ -6,6 +6,10 @@ public class ArrayList2 {
     private int[] ArrayList = new int[capacity];
 
     public void addAll(int index, ArrayList<Integer> toInsert){
+        if (index < 0 || index > size()) {
+        throw new IndexOutOfBoundsException();
+        }
+        
         int x = 0, y = 0;
         int[] ArrayList2 = new int[capacity];
         for (int i = 0; i < index; i++){
